@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+
+  "name": "Copy Unicode URLs",
+  "description": "Copy unicode URLs to clipboard without nasty percent-encodings or punycode!",
+  "homepage_url": "https://github.com/ilyaigpetrov/copy-unicode-urls",
+  "version": "0.0.1",
+  "icons": {
+    "128": "./icons/zh-red-128.png"
+  },
+  "author": "ilyaigpetrov+copy-unicode-urls@gmail.com",
+
+  "permissions": [
+    "activeTab"
+    , "contextMenus"
+  ],
+
+  "background": {
+    "presistent": false,
+    "page": "./bg.html"
+  },
+
+  "browser_action": {
+    "default_title": "Click to copy unicode URL into the clipboard",
+    "default_icon": "./icons/zh-red-128.png"
+  }
+}
