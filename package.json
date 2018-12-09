@@ -1,0 +1,22 @@
+{
+  "name": "copy-unicode-urls",
+  "version": "0.0.1",
+  "description": "Copy unicode strings from address bar without nasty percent-encodings or punycode!",
+  "main": "background.js",
+  "scripts": {
+    "start": "npm install && ./zip.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilyaigpetrov/copy-unicode-urls.git"
+  },
+  "author": "Ilya Ig. Petrov",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ilyaigpetrov/copy-unicode-urls/issues"
+  },
+  "homepage": "https://github.com/ilyaigpetrov/copy-unicode-urls#readme",
+  "dependencies": {
+    "punycode": "^2.1.1"
+  }
+}
