@@ -20,10 +20,24 @@ const localizeUrl = (url) => {
   } catch(e) {
     u = new URL(`http://${url}`);
   }
-  return decodeURI(u.href.replace(u.hostname, toUnicode(u.hostname)))
+  return decodeURI(u.href
+      .replace(u.hostname, toUnicode(u.hostname))
+      // Prevent decodings of %25, otherwise %2526 -> %26 -> & in the address bar
+      // instead of preserving %2526 (%252526 -> %2526 -> %26 in the address bar).
+      .replace(/%25/g, '%2525'),
+    )
+    // Encode %-signs that are not part of percent encodings left by decodeURI.
     .replace(
-      /(\s)/g,
-      (index, whole) => encodeURIComponent(whole.charAt(index)),
+      // %3F is '?' that doesn't start a query string.
+      // %26 is '&', %23 is '#', %3D is '=', %2F is '/', %25 is '%'
+      // All escapes above are not decoded by decodeURI with replaces.
+      /%(?!3F)(?!26)(?!23)(?!3D)(?!2F)(?!25)/ig,
+      '%25', // %25 is encoded '%'.
+    )
+    // Encode whitespace.
+    .replace(
+      /\s/g,
+      (_, index, wholeString) => encodeURIComponent(wholeString.charAt(index)),
     );
 };
 
