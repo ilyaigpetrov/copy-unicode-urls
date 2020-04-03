@@ -52,9 +52,9 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
       // Encode %-signs that are not part of percent encodings left by decodeURI.
       .replace(
         // %3F is '?' that doesn't start a query string.
-        // %26 is '&', %23 is '#', %3D is '=', %2F is '/', %25 is '%'
+        // %26 is '&', %23 is '#', %3A is ':' %3D is '=', %2F is '/', %25 is '%'
         // All escapes above are not decoded by decodeURI with replaces.
-        /%(?!3F)(?!26)(?!23)(?!3D)(?!2F)(?!25)/ig,
+        /%(?!3F)(?!26)(?!23)(?!3A)(?!3D)(?!2F)(?!25)/ig,
         '%25', // %25 is encoded '%'.
       )
       // Encode whitespace.
