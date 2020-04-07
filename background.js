@@ -7,7 +7,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
   window.apis.storage = {
     get(what) {
       return new Promise((resolve) => (
-        chrome.storage.sync.get(
+        chrome.storage.local.get(
           what ? [what] : null,
           (msg) => resolve(what ? msg[what] : msg),
         )
@@ -15,7 +15,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     },
     set(what) {
       return new Promise((resolve) => (
-        chrome.storage.sync.set(what, resolve)
+        chrome.storage.local.set(what, resolve)
       ));
     },
   };
