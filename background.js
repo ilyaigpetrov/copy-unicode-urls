@@ -73,11 +73,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     ({ url }) => copyUrl(url),
   );
 
-  let seqId = 0;
-
-  const createMenuEntry = (type, title, handler, contexts, opts) => {
-
-    const id = (++seqId).toString();
+  const createMenuEntry = (id, type, title, handler, contexts, opts) => {
 
     chrome.contextMenus.create({
       type,
@@ -102,7 +98,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
 
   };
 
-  createMenuEntry('checkbox', 'If to decode', (info) => {
+  createMenuEntry('ifToDecode', 'checkbox', 'If to decode', (info) => {
 
       window.apis.storage.set({ ifToDecode: info.checked });
     },
@@ -112,7 +108,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     },
   );
 
-  createMenuEntry('checkbox', 'If to encode sentence terminators', (info) => {
+  createMenuEntry('ifToEncodeSentenceTerminators', 'checkbox', 'If to encode sentence terminators', (info) => {
 
       window.apis.storage.set({ ifToEncodeSentenceTerminators: info.checked });
     },
@@ -122,7 +118,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     },
   );
 
-  createMenuEntry('normal', 'Donate ❤', (info) => {
+  createMenuEntry('donate', 'normal', 'Donate ❤', (info) => {
       chrome.tabs.create({ url: 'https://ilyaigpetrov.page.link/donate' });
     },
     ['browser_action'],
@@ -131,7 +127,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     },
   );
 
-  createMenuEntry('normal', 'Copy unicode URL', (info) => copyUrl(
+  createMenuEntry('copyUrl', 'normal', 'Copy unicode URL', (info) => copyUrl(
       info.linkUrl ||
       info.srcUrl ||
       info.frameUrl ||
