@@ -122,6 +122,15 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     },
   );
 
+  createMenuEntry('normal', 'Donate ❤', (info) => {
+      chrome.tabs.create({ url: 'https://ilyaigpetrov.page.link/donate' });
+    },
+    ['browser_action'],
+    {
+      checked: (await window.apis.storage.get('ifToEncodeSentenceTerminators')) === true,
+    },
+  );
+
   createMenuEntry('normal', 'Copy unicode URL', (info) => copyUrl(
       info.linkUrl ||
       info.srcUrl ||
