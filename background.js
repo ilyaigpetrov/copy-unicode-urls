@@ -20,9 +20,12 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     },
   };
 
-  let mode = await window.apis.storage.get('mode');
-  if (mode === undefined) {
-    await window.apis.storage.set({ mode: 'decode' });
+  if ((await window.apis.storage.get('ifToDecode')) === undefined) {
+    await window.apis.storage.set({ ifToDecode: true });
+  }
+
+  if ((await window.apis.storage.get('ifToEncodeSentenceTerminators')) === undefined) {
+    await window.apis.storage.set({ ifToEncodeSentenceTerminators: false });
   }
 
   const copyToClipboard = (str) => {
@@ -44,18 +47,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
       u = new URL(`http://${url}`);
     }
     return decodeURI(u.href
-        .replace(u.hostname, toUnicode(u.hostname))
-        // Prevent decodings of %25, otherwise %2526 -> %26 -> & in the address bar
-        // instead of preserving %2526 (%252526 -> %2526 -> %26 in the address bar).
-        .replace(/%25/g, '%2525'),
-      )
-      // Encode %-signs that are not part of percent encodings left by decodeURI.
-      .replace(
-        // %3F is '?' that doesn't start a query string.
-        // %26 is '&', %23 is '#', %3A is ':' %3D is '=', %2F is '/', %25 is '%'
-        // All escapes above are not decoded by decodeURI with replaces.
-        /%(?!3F)(?!26)(?!23)(?!3A)(?!3D)(?!2F)(?!25)/ig,
-        '%25', // %25 is encoded '%'.
+        .replace(u.hostname, toUnicode(u.hostname)),
       )
       // Encode whitespace.
       .replace(
@@ -66,12 +58,15 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
 
   const copyUrl = async (url) => {
 
-    const ifToDecode = (await window.apis.storage.get('mode')) === 'decode';
-    copyToClipboard(
-      ifToDecode
-        ? localizeUrl(url)
-        : url.replace(/[(){}[\].,;:!?]$/g, (matched, index, wholeString) => `%${matched.charCodeAt(0).toString(16)}`),
-    );
+    const ifToDecode = (await window.apis.storage.get('ifToDecode'));
+    const ifToEncodeSentenceTerminators = (await window.apis.storage.get('ifToEncodeSentenceTerminators'));
+    if (ifToDecode) {
+      url = localizeUrl(url);
+    }
+    if (ifToEncodeSentenceTerminators) {
+      url = url.replace(/[(){}[\].,;:!?]$/g, (matched, index, wholeString) => `%${matched.charCodeAt(0).toString(16).toUpperCase()}`);
+    }
+    copyToClipboard(url);
   };
 
   chrome.browserAction.onClicked.addListener(
@@ -107,23 +102,23 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
 
   };
 
-  createMenuEntry('radio', 'Encode mode (for legacy software)', (info) => {
+  createMenuEntry('checkbox', 'If to decode', (info) => {
 
-      window.apis.storage.set({ mode: 'encode' });
+      window.apis.storage.set({ ifToDecode: info.checked });
     },
     ['browser_action'],
     {
-      checked: (await window.apis.storage.get('mode')) === 'encode',
+      checked: (await window.apis.storage.get('ifToDecode')) === true,
     },
   );
 
-  createMenuEntry('radio', 'Decode mode (to unicode)', (info) => {
+  createMenuEntry('checkbox', 'If to encode sentence terminators', (info) => {
 
-      window.apis.storage.set({ mode: 'decode' });
+      window.apis.storage.set({ ifToEncodeSentenceTerminators: info.checked });
     },
     ['browser_action'],
     {
-      checked: (await window.apis.storage.get('mode')) === 'decode',
+      checked: (await window.apis.storage.get('ifToEncodeSentenceTerminators')) === true,
     },
   );
 
