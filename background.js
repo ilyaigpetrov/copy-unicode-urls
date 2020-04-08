@@ -119,7 +119,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
   );
 
   createMenuEntry('donate', 'normal', 'Donate ❤', (info) => {
-      chrome.tabs.create({ url: 'https://ilyaigpetrov.page.link/donate' });
+      chrome.tabs.create({ url: 'https://ilyaigpetrov.page.link/copy-unicode-urls-donate' });
     },
     ['browser_action'],
     {
