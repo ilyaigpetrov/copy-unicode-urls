@@ -6,7 +6,7 @@
   "homepage_url": "https://github.com/ilyaigpetrov/copy-unicode-urls",
   "version": "0.0.6",
   "icons": {
-    "128": "./icons/zh-red-128.png"
+    "128": "icons/zh-red-128.png"
   },
   "author": "ilyaigpetrov+copy-unicode-urls@gmail.com",
 
