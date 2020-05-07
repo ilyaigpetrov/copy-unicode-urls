@@ -34,10 +34,10 @@
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
-        "windows": "Ctrl+Shift+Y",
-        "mac": "Command+Shift+Y",
-        "chromeos": "Ctrl+Shift+Y",
-        "linux": "Ctrl+Shift+Y"
+        "windows": "Alt+U",
+        "mac": "Alt+U",
+        "chromeos": "Alt+U",
+        "linux": "Alt+U"
       }
     }
   }
