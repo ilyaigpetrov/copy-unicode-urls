@@ -6,7 +6,7 @@
   "homepage_url": "https://github.com/ilyaigpetrov/copy-unicode-urls",
   "version": "0.0.9",
   "icons": {
-    "128": "icons/zh-red-128.png"
+    "128": "icons/u-red-128.png"
   },
   "author": "ilyaigpetrov+copy-unicode-urls@gmail.com",
 
@@ -29,7 +29,7 @@
 
   "browser_action": {
     "default_title": "Click to copy unicode URL into the clipboard",
-    "default_icon": "./icons/zh-red-128.png"
+    "default_icon": "./icons/u-red-128.png"
   },
   "commands": {
     "_execute_browser_action": {
