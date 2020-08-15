@@ -127,7 +127,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     },
   );
 
-  createMenuEntry('copyUrl', 'normal', 'Copy unicode URL', (info) => copyUrl(
+  createMenuEntry('copyUrl', 'normal', chrome.i18n.getMessage('copyUnicodeUrl'), (info) => copyUrl(
       info.linkUrl ||
       info.srcUrl ||
       info.frameUrl ||
