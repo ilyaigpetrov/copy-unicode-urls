@@ -11,7 +11,7 @@
     "message": "Декодировать",
     "description": ""
   },
-  "ifToDecodeSentenceTerminators": {
+  "ifToEncodeSentenceTerminators": {
     "message": "Кодировать знаки окончания предложения",
     "description": ""
   },
