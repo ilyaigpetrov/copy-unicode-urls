@@ -22,5 +22,9 @@
   "copyUnicodeUrl": {
     "message": "Скопировать юникодную ссылку",
     "description": ""
+  },
+  "iconHint": {
+    "message": "Кликните для копирования юникодной ссылки в буфер обмена",
+    "description": ""
   }
 }

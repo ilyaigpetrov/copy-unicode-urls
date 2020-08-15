@@ -29,7 +29,7 @@
   },
 
   "browser_action": {
-    "default_title": "Click to copy unicode URL into the clipboard",
+    "default_title": "__MSG_iconHint__",
     "default_icon": "./icons/u-red-128.png"
   },
   "commands": {

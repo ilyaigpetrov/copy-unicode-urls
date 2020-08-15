@@ -22,5 +22,9 @@
   "copyUnicodeUrl": {
     "message": "Copy Unicode URL",
     "description": ""
+  },
+  "iconHint": {
+    "message": "Click to copy unicode URL into the clipboard",
+    "description": ""
   }
 }
