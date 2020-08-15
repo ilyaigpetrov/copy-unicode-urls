@@ -1,0 +1,22 @@
+{
+  "extensionName": {
+    "message": "Copy Unicode URLs",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Copy Unicode URLs to clipboard without nasty percent-encodings or Punycode!",
+    "description": "Description of the extension."
+  },
+  "ifToDecode": {
+    "message": "If to decode",
+    "description": ""
+  },
+  "ifToDecodeSentenceTerminators": {
+    "message": "If to encode sentence terminators",
+    "description": ""
+  },
+  "donate": {
+    "message": "Donate ❤",
+    "description": ""
+  }
+}
