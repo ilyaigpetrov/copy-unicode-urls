@@ -98,7 +98,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
 
   };
 
-  createMenuEntry('ifToDecode', 'checkbox', 'If to decode', (info) => {
+  createMenuEntry('ifToDecode', 'checkbox', chrome.i18n.getMessage('ifToDecode'), (info) => {
 
       window.apis.storage.set({ ifToDecode: info.checked });
     },
@@ -108,7 +108,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     },
   );
 
-  createMenuEntry('ifToEncodeSentenceTerminators', 'checkbox', 'If to encode sentence terminators', (info) => {
+  createMenuEntry('ifToEncodeSentenceTerminators', 'checkbox', chrome.i18n.getMessage('ifToEncodeSentenceTerminators'), (info) => {
 
       window.apis.storage.set({ ifToEncodeSentenceTerminators: info.checked });
     },
@@ -118,7 +118,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     },
   );
 
-  createMenuEntry('donate', 'normal', 'Donate ❤', (info) => {
+  createMenuEntry('donate', 'normal', chrome.i18n.getMessage('donate'), (info) => {
       chrome.tabs.create({ url: 'https://ilyaigpetrov.page.link/copy-unicode-urls-donate' });
     },
     ['browser_action'],

@@ -4,7 +4,7 @@
     "description": "Name of the extension."
   },
   "extensionDescription": {
-    "message": "Копируйте ссылки Unicode в буфер обмена без ужасных кодировок с процентами или Punycode!",
+    "message": "Копируйте юникодные ссылки в буфер обмена без ужасных кодировок с процентами или Punycode!",
     "description": "Description of the extension."
   },
   "ifToDecode": {
@@ -16,7 +16,11 @@
     "description": ""
   },
   "donate": {
-    "message": "Пожертвовать ❤",
+    "message": "Поддержать ❤",
+    "description": ""
+  },
+  "copyUnicodeUrl": {
+    "message": "Скопировать юникодную ссылку",
     "description": ""
   }
 }

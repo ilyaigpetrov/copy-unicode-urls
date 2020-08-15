@@ -18,5 +18,9 @@
   "donate": {
     "message": "Donate ❤",
     "description": ""
+  },
+  "copyUnicodeUrl": {
+    "message": "Copy Unicode URL",
+    "description": ""
   }
 }
