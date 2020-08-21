@@ -11,8 +11,8 @@
     "message": "Декодировать",
     "description": ""
   },
-  "ifToEncodeSentenceTerminators": {
-    "message": "Кодировать знаки окончания предложения",
+  "ifToEncodeUrlTerminators": {
+    "message": "Кодировать знаки окончания URL",
     "description": ""
   },
   "donate": {

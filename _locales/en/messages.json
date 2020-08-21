@@ -11,8 +11,8 @@
     "message": "If to decode",
     "description": ""
   },
-  "ifToEncodeSentenceTerminators": {
-    "message": "If to encode sentence terminators",
+  "ifToEncodeUrlTerminators": {
+    "message": "If to encode URL terminators",
     "description": ""
   },
   "donate": {

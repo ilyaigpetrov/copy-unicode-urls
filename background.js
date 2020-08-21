@@ -24,8 +24,8 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     await window.apis.storage.set({ ifToDecode: true });
   }
 
-  if ((await window.apis.storage.get('ifToEncodeSentenceTerminators')) === undefined) {
-    await window.apis.storage.set({ ifToEncodeSentenceTerminators: false });
+  if ((await window.apis.storage.get('ifToEncodeUrlTerminators')) === undefined) {
+    await window.apis.storage.set({ ifToEncodeUrlTerminators: false });
   }
 
   const copyToClipboard = (str) => {
@@ -59,12 +59,21 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
   const copyUrl = async (url) => {
 
     const ifToDecode = (await window.apis.storage.get('ifToDecode'));
-    const ifToEncodeSentenceTerminators = (await window.apis.storage.get('ifToEncodeSentenceTerminators'));
+    const ifToEncodeUrlTerminators = (await window.apis.storage.get('ifToEncodeUrlTerminators'));
     if (ifToDecode) {
       url = localizeUrl(url);
     }
-    if (ifToEncodeSentenceTerminators) {
-      url = url.replace(/[(){}[\].,;:!?]$/g, (matched, index, wholeString) => `%${matched.charCodeAt(0).toString(16).toUpperCase()}`);
+    if (ifToEncodeUrlTerminators) {
+      /*
+        Issue #7.
+        Thunderbird sources:
+        https://searchfox.org/comm-central/source/mozilla/netwerk/streamconv/converters/mozTXTToHTMLConv.cpp#281 (mozTXTToHTMLConv::FindURLEnd)
+        These chars terminate the URL: ><"`}{)]`
+        These sequence doesn't terminate the URL: //[ (e.g. http://[1080::...)
+        These chars are not allowed at the end of the URL: .,;!?-:'
+        I apply slightly more strict rules below.
+      **/
+      url = url.replace(/(?:[<>{}()[\]"`']|[.,;:!?-]$)/g, (matched, index, wholeString) => `%${matched.charCodeAt(0).toString(16).toUpperCase()}`);
     }
     copyToClipboard(url);
   };
@@ -108,13 +117,13 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     },
   );
 
-  createMenuEntry('ifToEncodeSentenceTerminators', 'checkbox', chrome.i18n.getMessage('ifToEncodeSentenceTerminators'), (info) => {
+  createMenuEntry('ifToEncodeUrlTerminators', 'checkbox', chrome.i18n.getMessage('ifToEncodeUrlTerminators'), (info) => {
 
-      window.apis.storage.set({ ifToEncodeSentenceTerminators: info.checked });
+      window.apis.storage.set({ ifToEncodeUrlTerminators: info.checked });
     },
     ['browser_action'],
     {
-      checked: (await window.apis.storage.get('ifToEncodeSentenceTerminators')) === true,
+      checked: (await window.apis.storage.get('ifToEncodeUrlTerminators')) === true,
     },
   );
 
@@ -123,7 +132,7 @@ import { toUnicode } from './node_modules/punycode/punycode.es6.js';
     },
     ['browser_action'],
     {
-      checked: (await window.apis.storage.get('ifToEncodeSentenceTerminators')) === true,
+      checked: (await window.apis.storage.get('ifToEncodeUrlTerminators')) === true,
     },
   );
 
