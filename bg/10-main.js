@@ -1,24 +1,8 @@
-import { toUnicode } from './node_modules/punycode/punycode.es6.js';
+import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
 
 (async () => {
-  console.log('Extension started successfully.');
-
-  window.apis = {};
-  window.apis.storage = {
-    get(what) {
-      return new Promise((resolve) => (
-        chrome.storage.local.get(
-          what ? [what] : null,
-          (msg) => resolve(what ? msg[what] : msg),
-        )
-      ));
-    },
-    set(what) {
-      return new Promise((resolve) => (
-        chrome.storage.local.set(what, resolve)
-      ));
-    },
-  };
+  await window.migrationPromise;
+  console.log('Migration is over. Main bg starts.');
 
   if ((await window.apis.storage.get('ifToDecode')) === undefined) {
     await window.apis.storage.set({ ifToDecode: true });
