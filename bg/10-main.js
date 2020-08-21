@@ -9,7 +9,7 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
   }
 
   if ((await window.apis.storage.get('ifToEncodeUrlTerminators')) === undefined) {
-    await window.apis.storage.set({ ifToEncodeUrlTerminators: false });
+    await window.apis.storage.set({ ifToEncodeUrlTerminators: true });
   }
 
   const copyToClipboard = (str) => {
