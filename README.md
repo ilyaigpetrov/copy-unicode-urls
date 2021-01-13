@@ -11,4 +11,4 @@ If extension is installed this way (from file system, not from webstore) then it
 
 # Donations
 
-Please, [donate](https://github.com/ilyaigpetrov/copy-unicode-urls/wiki/Donate) to keem me motivated. Thank you! 
+Please, [donate](https://github.com/ilyaigpetrov/copy-unicode-urls/wiki/Donate) to keep me motivated. Thank you! 
