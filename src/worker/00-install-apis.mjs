@@ -1,6 +1,6 @@
 console.log('Extension started successfully.');
-window.apis = {};
-window.apis.storage = {
+globalThis.apis = {};
+globalThis.apis.storage = {
   get(what) {
     return new Promise((resolve) => (
       chrome.storage.local.get(

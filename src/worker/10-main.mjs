@@ -1,15 +1,17 @@
-import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
+import { toUnicode } from 'punycode';
+
+chrome.i18n.getMessage = (str) => str;
 
 (async () => {
-  await window.migrationPromise;
+  await globalThis.migrationPromise;
   console.log('Migration is over. Main bg starts.');
 
-  if ((await window.apis.storage.get('ifToDecode')) === undefined) {
-    await window.apis.storage.set({ ifToDecode: true });
+  if ((await globalThis.apis.storage.get('ifToDecode')) === undefined) {
+    await globalThis.apis.storage.set({ ifToDecode: true });
   }
 
-  if ((await window.apis.storage.get('ifToEncodeUrlTerminators')) === undefined) {
-    await window.apis.storage.set({ ifToEncodeUrlTerminators: true });
+  if ((await globalThis.apis.storage.get('ifToEncodeUrlTerminators')) === undefined) {
+    await globalThis.apis.storage.set({ ifToEncodeUrlTerminators: true });
   }
 
   const copyToClipboard = (str) => {
@@ -42,8 +44,8 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
 
   const copyUrl = async (url) => {
 
-    const ifToDecode = (await window.apis.storage.get('ifToDecode'));
-    const ifToEncodeUrlTerminators = (await window.apis.storage.get('ifToEncodeUrlTerminators'));
+    const ifToDecode = (await globalThis.apis.storage.get('ifToDecode'));
+    const ifToEncodeUrlTerminators = (await globalThis.apis.storage.get('ifToEncodeUrlTerminators'));
     if (ifToDecode) {
       url = localizeUrl(url);
     }
@@ -62,7 +64,7 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
     copyToClipboard(url);
   };
 
-  chrome.browserAction.onClicked.addListener(
+  chrome.action.onClicked.addListener(
     ({ url }) => copyUrl(url),
   );
 
@@ -93,21 +95,21 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
 
   createMenuEntry('ifToDecode', 'checkbox', chrome.i18n.getMessage('ifToDecode'), (info) => {
 
-      window.apis.storage.set({ ifToDecode: info.checked });
+      globalThis.apis.storage.set({ ifToDecode: info.checked });
     },
     ['browser_action'],
     {
-      checked: (await window.apis.storage.get('ifToDecode')) === true,
+      checked: (await globalThis.apis.storage.get('ifToDecode')) === true,
     },
   );
 
   createMenuEntry('ifToEncodeUrlTerminators', 'checkbox', chrome.i18n.getMessage('ifToEncodeUrlTerminators'), (info) => {
 
-      window.apis.storage.set({ ifToEncodeUrlTerminators: info.checked });
+      globalThis.apis.storage.set({ ifToEncodeUrlTerminators: info.checked });
     },
     ['browser_action'],
     {
-      checked: (await window.apis.storage.get('ifToEncodeUrlTerminators')) === true,
+      checked: (await globalThis.apis.storage.get('ifToEncodeUrlTerminators')) === true,
     },
   );
 
@@ -116,7 +118,7 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
     },
     ['browser_action'],
     {
-      checked: (await window.apis.storage.get('ifToEncodeUrlTerminators')) === true,
+      checked: (await globalThis.apis.storage.get('ifToEncodeUrlTerminators')) === true,
     },
   );
 

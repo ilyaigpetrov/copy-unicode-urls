@@ -4,7 +4,7 @@
   "description": "Copy unicode strings from address bar without nasty percent-encodings or punycode!",
   "main": "background.js",
   "scripts": {
-    "start": "npm install && ./zip.sh"
+    "start": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,9 @@
   "homepage": "https://github.com/ilyaigpetrov/copy-unicode-urls#readme",
   "dependencies": {
     "punycode": "^2.1.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^11.2.0",
+    "rollup": "^2.41.1"
   }
 }
