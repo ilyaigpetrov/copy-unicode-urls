@@ -130,4 +130,10 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
     ['link', 'image', 'video', 'audio', 'frame', 'selection'],
   );
 
+  createMenuEntry('copyHighlightLink', 'normal', chrome.i18n.getMessage('copyUnicodeLinkToHighlight'), (info) => {
+    copyUrl(`${info.pageUrl.replace(/#.*/g, '')}#:~:text=${info.selectionText}`);
+  },
+  ['selection'],
+);
+
 })();

@@ -26,5 +26,9 @@
   "iconHint": {
     "message": "Click to copy unicode URL into the clipboard",
     "description": ""
+  },
+  "copyUnicodeLinkToHighlight": {
+    "message": "Copy Unicode link to highlight",
+    "description": ""
   }
 }
