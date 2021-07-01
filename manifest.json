@@ -18,7 +18,7 @@
   ],
 
   "background": {
-    "persistent": false,
+    "persistent": true,
     "page": "./bg.html"
   },
 
