@@ -30,5 +30,8 @@
   "copyUnicodeLinkToHighlight": {
     "message": "Copy Unicode link to highlight",
     "description": ""
+  },
+  "copyUrlFromTheAddressBar": {
+    "message": "Copy URL from the address bar"
   }
 }

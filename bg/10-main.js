@@ -91,6 +91,12 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
 
   };
 
+  createMenuEntry('copyUrlFromTheAddressBar', 'normal', chrome.i18n.getMessage('copyUrlFromTheAddressBar'), (info) => copyUrl(
+      info.pageUrl,
+    ),
+    ['all'],
+  );
+
   createMenuEntry('ifToDecode', 'checkbox', chrome.i18n.getMessage('ifToDecode'), (info) => {
 
       window.apis.storage.set({ ifToDecode: info.checked });
