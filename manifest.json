@@ -5,7 +5,7 @@
   "description": "__MSG_extensionDescription__",
   "homepage_url": "https://github.com/ilyaigpetrov/copy-unicode-urls",
   "default_locale": "en",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "icons": {
     "128": "icons/u-red-128.png"
   },
@@ -15,6 +15,7 @@
     "activeTab"
     , "contextMenus"
     , "storage"
+    , "clipboardWrite"
   ],
 
   "background": {
@@ -35,10 +36,7 @@
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
-        "windows": "Alt+U",
-        "mac": "Alt+U",
-        "chromeos": "Alt+U",
-        "linux": "Alt+U"
+        "default": "Alt+U"
       }
     }
   }
