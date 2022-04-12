@@ -12,14 +12,17 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
     await window.apis.storage.set({ ifToEncodeUrlTerminators: true });
   }
 
-  const copyToClipboard = (str) => {
-
-    const area = document.createElement('textarea');
-    area.value = str;
-    document.body.appendChild(area);
-    area.select();
-    document.execCommand('copy');
-    document.body.removeChild(area);
+  const copyToClipboardAsync = async (str) => {
+    try {
+      return await navigator.clipboard.writeText(str);
+    } catch {
+      const area = document.createElement('textarea');
+      area.value = str;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      document.body.removeChild(area);
+    }
   };
 
   const localizeUrl = (url) => {
@@ -59,7 +62,7 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
       **/
       url = url.replace(/(?:[<>{}()[\]"`']|[.,;:!?-]$)/g, (matched, index, wholeString) => `%${matched.charCodeAt(0).toString(16).toUpperCase()}`);
     }
-    copyToClipboard(url);
+    copyToClipboardAsync(url);
   };
 
   chrome.browserAction.onClicked.addListener(
