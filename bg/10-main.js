@@ -4,13 +4,28 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
   await window.migrationPromise;
   console.log('Migration is over. Main bg starts.');
 
-  if ((await window.apis.storage.get('ifToDecode')) === undefined) {
-    await window.apis.storage.set({ ifToDecode: true });
-  }
+  const optsSource = {
+    ifToDecode: { dflt: true, order: 0 },
+    ifToEncodeUrlTerminators: { dflt: true, order: 1 },
+    ifToDecodeMultipleTimes: { dflt: false, order: 2 },
+  };
+  const os = optsSource;
+  const sortedOptsKeys = Object.keys(os).sort((keyA, keyB) => os[keyA].order - os[keyB].order);
 
-  if ((await window.apis.storage.get('ifToEncodeUrlTerminators')) === undefined) {
-    await window.apis.storage.set({ ifToEncodeUrlTerminators: true });
-  }
+  const defaults = sortedOptsKeys.reduce(
+    (acc, key) => Object.assign(
+      acc,
+      { [key]: os[key].dflt },
+    ),
+    {},
+  );
+
+  const oldOpts = await window.apis.storage.get('options');
+  const opts = Object.assign(
+    {},
+    defaults,
+    oldOpts ? JSON.parse(oldOpts) : {},
+  );
 
   const copyToClipboardAsync = async (str) => {
     try {
@@ -30,10 +45,14 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
     let u;
     try {
       u = new URL(url);
-    } catch(e) {
+    } catch {
       u = new URL(`http://${url}`);
     }
-    return decodeURI(u.href
+    let newHref = u.href
+    let oldHref;
+    do {
+      oldHref = newHref;
+      newHref = decodeURI(newHref
         .replace(u.hostname, toUnicode(u.hostname)),
       )
       // Encode whitespace.
@@ -41,16 +60,16 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
         /\s/g,
         (_, index, wholeString) => encodeURIComponent(wholeString.charAt(index)),
       );
+    } while (opts.ifToDecodeMultipleTimes && oldHref !== newHref);
+    return newHref;
   };
 
   const copyUrl = async (url) => {
 
-    const ifToDecode = (await window.apis.storage.get('ifToDecode'));
-    const ifToEncodeUrlTerminators = (await window.apis.storage.get('ifToEncodeUrlTerminators'));
-    if (ifToDecode) {
+    if (opts.ifToDecode) {
       url = localizeUrl(url);
     }
-    if (ifToEncodeUrlTerminators) {
+    if (opts.ifToEncodeUrlTerminators) {
       /*
         Issue #7.
         Thunderbird sources:
@@ -69,14 +88,14 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
     ({ url }) => copyUrl(url),
   );
 
-  const createMenuEntry = (id, type, title, handler, contexts, opts) => {
+  const createMenuEntry = (id, type, title, handler, contexts, rest) => {
 
     chrome.contextMenus.create({
       type,
       id,
       title,
       contexts,
-      ...opts,
+      ...rest,
     }, () => {
       if (chrome.runtime.lastError) {
         // Suppress menus recreation.
@@ -88,7 +107,6 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
       if (info.menuItemId === id) {
         handler(info);
       }
-      console.log(info, tab);
 
     });
 
@@ -100,33 +118,27 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
     ['all'],
   );
 
-  createMenuEntry('ifToDecode', 'checkbox', chrome.i18n.getMessage('ifToDecode'), (info) => {
+  // CheckBoxes
 
-      window.apis.storage.set({ ifToDecode: info.checked });
-    },
-    ['browser_action'],
-    {
-      checked: (await window.apis.storage.get('ifToDecode')) === true,
-    },
+  sortedOptsKeys.forEach((key) =>
+    createMenuEntry(key, 'checkbox', chrome.i18n.getMessage(key), (info) => {
+
+        opts[key] = info.checked;
+        window.apis.storage.set({ options: JSON.stringify(opts) });
+      },
+      ['browser_action'],
+      {
+        checked: opts[key] === true,
+      },
+    ),
   );
 
-  createMenuEntry('ifToEncodeUrlTerminators', 'checkbox', chrome.i18n.getMessage('ifToEncodeUrlTerminators'), (info) => {
-
-      window.apis.storage.set({ ifToEncodeUrlTerminators: info.checked });
-    },
-    ['browser_action'],
-    {
-      checked: (await window.apis.storage.get('ifToEncodeUrlTerminators')) === true,
-    },
-  );
+  // /CheckBoxes
 
   createMenuEntry('donate', 'normal', chrome.i18n.getMessage('donate'), (info) => {
       chrome.tabs.create({ url: 'https://ilyaigpetrov.page.link/copy-unicode-urls-donate' });
     },
     ['browser_action'],
-    {
-      checked: (await window.apis.storage.get('ifToEncodeUrlTerminators')) === true,
-    },
   );
 
   createMenuEntry('copyUrl', 'normal', chrome.i18n.getMessage('copyUnicodeUrl'), (info) => copyUrl(

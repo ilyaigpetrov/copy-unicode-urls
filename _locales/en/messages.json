@@ -15,6 +15,10 @@
     "message": "If to encode URL terminators",
     "description": ""
   },
+  "ifToDecodeMultipleTimes": {
+    "message": "If to decode multiple times",
+    "description": ""
+  },
   "donate": {
     "message": "Donate ❤",
     "description": ""
