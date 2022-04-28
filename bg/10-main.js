@@ -1,31 +1,12 @@
-import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
+import { toUnicode } from '../../node_modules/punycode/punycode.es6.js';
 
 (async () => {
-  await window.migrationPromise;
-  console.log('Migration is over. Main bg starts.');
+  await globalThis.migrationPromise;
+  console.log('Migration is over. Main bg/worker starts.');
 
-  const optsSource = {
-    ifToDecode: { dflt: true, order: 0 },
-    ifToEncodeUrlTerminators: { dflt: true, order: 1 },
-    ifToDecodeMultipleTimes: { dflt: false, order: 2 },
-  };
-  const os = optsSource;
-  const sortedOptsKeys = Object.keys(os).sort((keyA, keyB) => os[keyA].order - os[keyB].order);
-
-  const defaults = sortedOptsKeys.reduce(
-    (acc, key) => Object.assign(
-      acc,
-      { [key]: os[key].dflt },
-    ),
-    {},
-  );
-
-  const oldOpts = await window.apis.storage.get('options');
-  const opts = Object.assign(
-    {},
-    defaults,
-    oldOpts ? JSON.parse(oldOpts) : {},
-  );
+  const { storage } = globalThis.APIS;
+  const options = await storage.getAsync('options');
+  const getOpt = (key) => options.find((el) => el[0] === key);
 
   const copyToClipboardAsync = async (str) => {
     try {
@@ -60,16 +41,16 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
         /\s/g,
         (_, index, wholeString) => encodeURIComponent(wholeString.charAt(index)),
       );
-    } while (opts.ifToDecodeMultipleTimes && oldHref !== newHref);
+    } while (getOpt('ifToDecodeMultipleTimes') && oldHref !== newHref);
     return newHref;
   };
 
   const copyUrl = async (url) => {
 
-    if (opts.ifToDecode) {
+    if (getOpt('ifToDecode')) {
       url = localizeUrl(url);
     }
-    if (opts.ifToEncodeUrlTerminators) {
+    if (getOpt('ifToEncodeUrlTerminators')) {
       /*
         Issue #7.
         Thunderbird sources:
@@ -119,16 +100,16 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
   );
 
   // CheckBoxes
-
-  sortedOptsKeys.forEach((key) =>
+  
+  options.forEach(([ key, value ], i) =>
     createMenuEntry(key, 'checkbox', chrome.i18n.getMessage(key), (info) => {
 
-        opts[key] = info.checked;
-        window.apis.storage.set({ options: JSON.stringify(opts) });
+        options[i] = [ key, info.checked ];
+        storage.setAsync({ options });
       },
       ['browser_action'],
       {
-        checked: opts[key] === true,
+        checked: value === true,
       },
     ),
   );
@@ -136,7 +117,7 @@ import { toUnicode } from '../node_modules/punycode/punycode.es6.js';
   // /CheckBoxes
 
   createMenuEntry('donate', 'normal', chrome.i18n.getMessage('donate'), (info) => {
-      chrome.tabs.create({ url: 'https://ilyaigpetrov.page.link/copy-unicode-urls-donate' });
+      chrome.tabs.create({ url: 'https://rebrand.ly/ilya-donate' });
     },
     ['browser_action'],
   );
