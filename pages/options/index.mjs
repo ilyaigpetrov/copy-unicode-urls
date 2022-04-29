@@ -1,5 +1,6 @@
 import { storage } from '../../lib/common-apis.mjs';
 
+donate.href = await storage.getAsync('donateUrl');
 const options = await storage.getAsync('options');
 
 options.forEach(([key, value], i) => {

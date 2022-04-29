@@ -116,8 +116,8 @@ import { toUnicode } from '../../node_modules/punycode/punycode.es6.js';
 
   // /CheckBoxes
 
-  createMenuEntry('donate', 'normal', chrome.i18n.getMessage('donate'), (info) => {
-      chrome.tabs.create({ url: 'https://rebrand.ly/ilya-donate' });
+  createMenuEntry('donate', 'normal', chrome.i18n.getMessage('donate'), async (info) => {
+      chrome.tabs.create({ url: await storage.getAsync('donateUrl') });
     },
     ['browser_action'],
   );
