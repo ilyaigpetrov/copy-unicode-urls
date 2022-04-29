@@ -6,7 +6,7 @@ import { toUnicode } from '../../node_modules/punycode/punycode.es6.js';
 
   const { storage } = globalThis.APIS;
   const options = await storage.getAsync('options');
-  const getOpt = (key) => options.find((el) => el[0] === key);
+  const getOpt = (key) => (options.find((el) => el[0] === key)[1]);
 
   const copyToClipboardAsync = async (str) => {
     try {
