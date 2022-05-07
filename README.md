@@ -1,5 +1,14 @@
 # Copy Unicode URLs
 
+## Stores
+
+| Browser | Store |
+|----------------|------|
+|Chrome/Chromium | https://chrome.google.com/webstore/detail/copy-unicode-urls/fnbbfiapefhkicjhecnoepbijhanpkjp |
+|FireFox | https://addons.mozilla.org/en-US/firefox/addon/copy-unicode-urls/|
+
+## Offline
+
 Packages for offline installation may be found at [releases page](https://github.com/ilyaigpetrov/copy-unicode-urls/releases):
 
 1) Download a zip file.
