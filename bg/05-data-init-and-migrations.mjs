@@ -1,6 +1,6 @@
 globalThis.migrationPromise = new Promise(async (resolve) => {
   console.log('Checking for migrations...');
-  const { version, storage } = APIS;
+  const { version, storage } = globalThis.APIS;
   const dflts = {
     options: [
       [ 'ifToDecode', true ],
