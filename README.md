@@ -7,7 +7,7 @@
 |Chrome/Chromium | https://chrome.google.com/webstore/detail/copy-unicode-urls/fnbbfiapefhkicjhecnoepbijhanpkjp |
 |FireFox | https://addons.mozilla.org/en-US/firefox/addon/copy-unicode-urls/|
 
-On FireFox there is a special option `browser.urlbar.decodeURLsOnCopy` accessible at about:config that decodes url on copy. If you want to save some resources then it may be enough for you.
+On FireFox there is a special option `browser.urlbar.decodeURLsOnCopy` accessible at `about:config` that decodes url on copy. If you want to save some resources then it may be enough for you.
 
 ## Offline
 
