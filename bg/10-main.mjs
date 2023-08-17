@@ -33,8 +33,14 @@ import { toUnicode } from '../../node_modules/punycode/punycode.es6.js';
     let oldHref;
     do {
       oldHref = newHref;
-      newHref = decodeURI(newHref
-        .replace(u.hostname, toUnicode(u.hostname)),
+      newHref = decodeURI(
+        newHref
+          .replace(u.hostname, toUnicode(u.hostname))
+          /*
+            Don't decode `%25` to `%` because it causes errors while being put in GitHub URLs.
+            Test case: https://github.com/ilyaigpetrov/copy-unicode-urls/wiki/Test-%25-and-%3F
+          */
+          .replaceAll('%25', '%2525'),
       )
       // Encode whitespace.
       .replace(
@@ -100,7 +106,7 @@ import { toUnicode } from '../../node_modules/punycode/punycode.es6.js';
   );
 
   // CheckBoxes
-  
+
   options.forEach(([ key, value ], i) =>
     createMenuEntry(key, 'checkbox', chrome.i18n.getMessage(key), (info) => {
 
