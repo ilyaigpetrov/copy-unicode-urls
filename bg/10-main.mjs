@@ -11,7 +11,8 @@ import { toUnicode } from '../../node_modules/punycode/punycode.es6.js';
   const copyToClipboardAsync = async (str) => {
     try {
       return await navigator.clipboard.writeText(str);
-    } catch {
+    } catch(e) {
+      console.log('Got error while copying attempt:', e);
       const area = document.createElement('textarea');
       area.value = str;
       document.body.appendChild(area);
@@ -71,7 +72,7 @@ import { toUnicode } from '../../node_modules/punycode/punycode.es6.js';
     copyToClipboardAsync(url);
   };
 
-  chrome.browserAction.onClicked.addListener(
+  chrome.action.onClicked.addListener(
     ({ url }) => copyUrl(url),
   );
 

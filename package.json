@@ -4,7 +4,9 @@
   "description": "Copy unicode strings from address bar without nasty percent-encodings or punycode!",
   "main": "background.js",
   "scripts": {
-    "start": "npm install && ./zip.sh"
+    "start": "npm install && ./zip.sh",
+    "mv2": "cp ./manifest.v2.json ./manifest.json",
+    "mv3": "cp ./manifest.v3.json ./manifest.json"
   },
   "repository": {
     "type": "git",
