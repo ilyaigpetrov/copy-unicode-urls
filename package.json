@@ -1,24 +1,29 @@
 {
   "name": "copy-unicode-urls",
-  "version": "0.0.1",
-  "description": "Copy unicode strings from address bar without nasty percent-encodings or punycode!",
-  "main": "background.js",
+  "version": "0.0.22",
+  "description": "",
+  "homepage": "https://github.com/ilyaigpetrov/copy-unicode-urls#readme",
+  "main": "index.js",
   "scripts": {
-    "start": "npm install && ./zip.sh",
-    "mv2": "cp ./manifest.v2.json ./manifest.json",
-    "mv3": "cp ./manifest.v3.json ./manifest.json"
+    "start": "npm run clean; npm run build",
+    "build": "./tasks/build.mjs",
+    "clean": "rm -rf /_generated",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ilyaigpetrov",
+  "bugs": {
+    "url": "https://github.com/ilyaigpetrov/copy-unicode-urls/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ilyaigpetrov/copy-unicode-urls.git"
   },
-  "author": "ilyaigpetrov",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/ilyaigpetrov/copy-unicode-urls/issues"
-  },
-  "homepage": "https://github.com/ilyaigpetrov/copy-unicode-urls#readme",
+  "license": "ISC",
   "dependencies": {
     "punycode": "^2.1.1"
+  },
+  "devDependencies": {
+    "merge": "^2.1.1",
+    "mri": "^1.2.0"
   }
 }

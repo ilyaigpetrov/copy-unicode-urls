@@ -1,29 +1,33 @@
 {
-  "extensionName": {
+  "ExtensionName": {
     "message": "Copy Unicode URLs",
     "description": "Name of the extension."
   },
-  "extensionDescription": {
+  "ExtensionDescription": {
     "message": "复制 Unicode 网址时去掉令人讨厌的百分比编码或Punycode！",
     "description": "Description of the extension."
   },
-  "ifToDecode": {
+  "FOR_TESTING": {
+    "message": "FOR TESTING"
+  },
+
+  "IfToDecode": {
     "message": "是否编码",
     "description": ""
   },
-  "ifToEncodeUrlTerminators": {
+  "IfToEncodeUrlTerminators": {
     "message": "是否编码 URL 终止符",
     "description": ""
   },
-  "donate": {
+  "Donate": {
     "message": "捐赠 ❤",
     "description": ""
   },
-  "copyUnicodeUrl": {
+  "CopyUnicodeUrl": {
     "message": "复制 Unicode URL",
     "description": ""
   },
-  "iconHint": {
+  "IconHint": {
     "message": "复制 unicode URL 到剪贴板",
     "description": ""
   }

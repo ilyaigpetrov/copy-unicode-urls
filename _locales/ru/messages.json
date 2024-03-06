@@ -1,29 +1,33 @@
 {
-  "extensionName": {
+  "ExtensionName": {
     "message": "Copy Unicode URLs",
     "description": "Name of the extension."
   },
-  "extensionDescription": {
+  "ExtensionDescription": {
     "message": "Копируйте юникодные ссылки в буфер обмена без ужасных кодировок с процентами или Punycode!",
     "description": "Description of the extension."
   },
-  "ifToDecode": {
+  "FOR_TESTING": {
+    "message": "FOR TESTING"
+  },
+
+  "IfToDecode": {
     "message": "Декодировать",
     "description": ""
   },
-  "ifToEncodeUrlTerminators": {
+  "IfToEncodeUrlTerminators": {
     "message": "Кодировать знаки окончания URL",
     "description": ""
   },
-  "donate": {
+  "Donate": {
     "message": "Поддержать ❤",
     "description": ""
   },
-  "copyUnicodeUrl": {
+  "CopyUnicodeUrl": {
     "message": "Скопировать юникодную ссылку",
     "description": ""
   },
-  "iconHint": {
+  "IconHint": {
     "message": "Кликните для копирования юникодной ссылки в буфер обмена",
     "description": ""
   }

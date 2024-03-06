@@ -1,6 +1,7 @@
+import { versions, storage } from '../lib/index.mjs';
+
 globalThis.migrationPromise = new Promise(async (resolve) => {
   console.log('Checking for migrations...');
-  const { version, storage } = globalThis.APIS;
   const dflts = {
     options: [
       [ 'ifToDecode', true ],
@@ -14,18 +15,19 @@ globalThis.migrationPromise = new Promise(async (resolve) => {
     // Initialisation. First install.
     await storage.setAsync({
       ...dflts,
-      version: version.current,
+      version: versions.current,
     });
     return resolve();
   }
   // Migration (may be already migrated).
-  console.log(`Current extension version is ${version.current}.`);
+  console.log(`Current extension version is ${versions.current}.`);
   const oldVersion = await storage.getAsync('version');
-  const ifNoNeedToMigrate = oldVersion === version.current;
-  if (ifNoNeedToMigrate) {
+  const ifNoNeedToMigrate = oldVersion === versions.current;
+  if (ifNoNeedToMigrate) {http://я.рф/яhttp://я.рф/я
+    console.log('No need for migration.');
     return resolve();
   }
-  console.log(`Migrating to ${version.current} from ${oldVersion || 'a very old version'}.`);
+  console.log(`Migrating to ${versions.current} from ${oldVersion || 'a very old version'}.`);
   switch(true) {
     case !oldVersion: {
       // Update from version <= 0.0.18.
@@ -38,7 +40,7 @@ globalThis.migrationPromise = new Promise(async (resolve) => {
         await storage.removeAsync('ifToEncodeSentenceTerminators')
       }
     }; // Fallthrough.
-    case version.isLeq(oldVersion, '0.0.18'): {
+    case versions.isLeq(oldVersion, '0.0.18'): {
       console.log('Migrating to >= 0.0.19.');
       const oldState = await storage.getAsync();
       // `oldState` looks like `{ 'ifToEncodeSentenceTerminators': true, 'ifFoobar': false }`.
@@ -51,7 +53,7 @@ globalThis.migrationPromise = new Promise(async (resolve) => {
       await storage.setAsync({ ...dflts, options: migratedOpts });
     }; // Fallthrough.
     default:
-      await storage.setAsync({ version: version.current });
+      await storage.setAsync({ version: versions.current });
   }
   return resolve();
 });
