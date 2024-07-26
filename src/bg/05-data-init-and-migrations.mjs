@@ -23,7 +23,7 @@ globalThis.migrationPromise = new Promise(async (resolve) => {
   console.log(`Current extension version is ${versions.current}.`);
   const oldVersion = await storage.getAsync('version');
   const ifNoNeedToMigrate = oldVersion === versions.current;
-  if (ifNoNeedToMigrate) {http://я.рф/яhttp://я.рф/я
+  if (ifNoNeedToMigrate) {
     console.log('No need for migration.');
     return resolve();
   }
