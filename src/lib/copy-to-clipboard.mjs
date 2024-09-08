@@ -9,7 +9,7 @@ export const copyToClipboardAsync = async (copyMe) => {
   } catch(e) {
     console.log('Got error while copying attempt:', e);
     if (globalThis.document) {
-      console.log('Trying `globalThis.document`...');
+      console.log('Trying `document.execCommand`...');
       const area = document.createElement('textarea');
       area.value = copyMe;
       document.body.appendChild(area);
@@ -35,8 +35,9 @@ export const copyToClipboardAsync = async (copyMe) => {
         return;
       }
 
-      // create offscreen document
+      // Create offscreen document.
       if (IF_ALREADY_PROMISE) {
+        console.log('Already promised.');
         return IF_ALREADY_PROMISE;
       }
       console.log('Creating new offscreen document for:', path);
