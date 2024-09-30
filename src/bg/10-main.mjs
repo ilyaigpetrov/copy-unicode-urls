@@ -41,7 +41,7 @@ const copyUrlInstalledPromise = (async () => {
     let newHref = u.href;
     // Remove the trailing slash if path and hash are empty:
     //    http://я.рф/ -> http://я.рф
-    // TODO:
+    // Don't encode `?`:
     //    http:/я.рф/? -> http:/я.рф/? (no changes, the question mark is not encoded as %3F)
     // If user gives you an url with a trailing `?` then it's always assumed to be a query string.
     // Otherwise user just wouldn't have included the question mark into the selection.
@@ -59,7 +59,8 @@ const copyUrlInstalledPromise = (async () => {
         newHref
           .replace(u.hostname, toUnicode(u.hostname))
           /*
-            Don't decode `%25` to `%` because it causes errors while being put in GitHub URLs.
+            Don't decode `%25` to `%` and `%3F` to `?` because it causes errors while being put in
+            GitHub URLs.
             Test case: https://github.com/ilyaigpetrov/copy-unicode-urls/wiki/Test-%25-and-%3F
           */
           .replaceAll('%25', '%2525')

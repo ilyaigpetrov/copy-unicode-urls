@@ -24,6 +24,7 @@ export const copyToClipboardAsync = async (copyMe) => {
       // Check all windows controlled by the service worker to see if one
       // of them is the offscreen document with the given path
       const offscreenUrl = chrome.runtime.getURL(path);
+      console.log(`Opening offscreen page for ${path}. It's url is ${offscreenUrl}}.`)
       const existingContexts = await chrome.runtime.getContexts({
         contextTypes: ['OFFSCREEN_DOCUMENT'],
         documentUrls: [offscreenUrl],
@@ -40,9 +41,9 @@ export const copyToClipboardAsync = async (copyMe) => {
         console.log('Already promised.');
         return IF_ALREADY_PROMISE;
       }
-      console.log('Creating new offscreen document for:', path);
+      console.log('Creating new offscreen document for:', offscreenUrl);
       IF_ALREADY_PROMISE = chrome.offscreen.createDocument({
-        url: path,
+        url: offscreenUrl,
         reasons: [chrome.offscreen.Reason.CLIPBOARD],
         justification: 'reason for needing the document',
       });

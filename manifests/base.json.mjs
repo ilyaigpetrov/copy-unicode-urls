@@ -22,13 +22,7 @@ export const render = ({ version, edition }) => {
       "128": "/icons/u-red-128.png"
     },
     "author": "ilyaigpetrov+copy-unicode-urls@gmail.com",
-    "permissions": [
-      "activeTab"
-      , "contextMenus"
-      , "storage"
-      , "clipboardWrite"
-    ],
-      
+
     "action": {
       "default_title":
         `__MSG___ | __MSG_Version__: ${version + localizedSuffix}`,
