@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import util from 'util';
-import cp from 'child_process';
+import chProcess from 'child_process';
 
-const exec = util.promisify(cp.exec);
+const exec = util.promisify(chProcess.exec);
 
 await exec('rm -rf ./_generated');
 

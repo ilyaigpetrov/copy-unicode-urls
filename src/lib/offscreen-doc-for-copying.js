@@ -25,20 +25,27 @@ chrome.runtime.onMessage.addListener(handleMessages);
 // This function performs basic filtering and error checking on messages before
 // dispatching the
 // message to a more specific message handler.
-function handleMessages(message) {
-  // Return early if this message isn't meant for the offscreen document.
-  if (message.target !== 'offscreen-doc') {
-    return;
+async function handleMessages(message) {
+  console.log('OD handler invoked with msg:', message);
+  if (message.target === 'offscreen-doc') {
+    // Dispatch the message to an appropriate handler.
+    switch (message.type) {
+      case 'copy-data-to-clipboard':
+        try {
+          handleClipboardWrite(message.data);
+          console.log('OD:Copied. Resolving...');
+          return Promise.resolve('COPIED_SUCCESSFULLY');
+        } finally {
+          // Job's done! Close the offscreen document.
+          window.close();
+        }
+        break;
+      default:
+        console.warn(`Unexpected message type received: '${message.type}'.`);
+    }
   }
-
-  // Dispatch the message to an appropriate handler.
-  switch (message.type) {
-    case 'copy-data-to-clipboard':
-      handleClipboardWrite(message.data);
-      break;
-    default:
-      console.warn(`Unexpected message type received: '${message.type}'.`);
-  }
+  console.log('OD:Not copied. Rejecting...');
+  return Promise.reject('NOT_COPIED');
 }
 
 // We use a <textarea> element for two main reasons:
@@ -52,22 +59,16 @@ function handleMessages(message) {
 // requires that the window is focused, but offscreen documents cannot be
 // focused. As such, we have to fall back to `document.execCommand()`.
 function handleClipboardWrite(data) {
-  try {
-    // Error if we received the wrong kind of data.
-    if (typeof data !== 'string') {
-      throw new TypeError(
-        `Value provided must be a 'string', got '${typeof data}'.`
-      );
-    }
-
-    // `document.execCommand('copy')` works against the user's selection in a web
-    // page. As such, we must insert the string we want to copy to the web page
-    // and to select that content in the page before calling `execCommand()`.
-    text.value = data;
-    text.select();
-    document.execCommand('copy');
-  } finally {
-    // Job's done! Close the offscreen document.
-    window.close();
+  // Error if we received the wrong kind of data.
+  if (typeof data !== 'string') {
+    throw new TypeError(
+      `Value provided must be a 'string', got '${typeof data}'.`
+    );
   }
+  // `document.execCommand('copy')` works against the user's selection in a web
+  // page. As such, we must insert the string we want to copy to the web page
+  // and to select that content in the page before calling `execCommand()`.
+  text.value = data;
+  text.select();
+  document.execCommand('copy');
 }

@@ -24,7 +24,7 @@ export const copyToClipboardAsync = async (copyMe) => {
       // Check all windows controlled by the service worker to see if one
       // of them is the offscreen document with the given path.
       const offscreenUrl = chrome.runtime.getURL(path);
-      console.log(`Opening offscreen page for ${path}. Its url is ${offscreenUrl}}.`)
+      console.log(`Opening offscreen page for ${path}. Its url is ${offscreenUrl}.`)
       const existingContexts = await chrome.runtime.getContexts({
         contextTypes: ['OFFSCREEN_DOCUMENT'],
         documentUrls: [offscreenUrl],
@@ -52,12 +52,14 @@ export const copyToClipboardAsync = async (copyMe) => {
       IF_ALREADY_PROMISE = null;
     }
     await setupOffscreenDocument(OFFSCREEN_DOC_PATH);
+    console.log('Sending a message to the offscreen doc.');
     // Now that we have an offscreen document, we can dispatch the
     // message.
-    await chrome.runtime.sendMessage({
+    const resp = await chrome.runtime.sendMessage({
       type: 'copy-data-to-clipboard',
       target: 'offscreen-doc',
       data: copyMe,
     });
+    console.log(`The OD replied with: ${resp}`);
   }
 };
