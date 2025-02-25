@@ -93,7 +93,7 @@ const copyUrlInstalledPromise = (async () => {
       **/
       const toPercentCode = (char) => '%' + char.charCodeAt(0).toString(16).toUpperCase();
       url = url.replace(
-        /(?:[<>{}()[\]"`']|[.,;:!-]$)/g,
+        /(?:[<>{}()[\]"`'|]|[.,;:!-]$)/g,
         (matchedChar, index, wholeString) => toPercentCode(matchedChar),
       );
     }
