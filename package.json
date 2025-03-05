@@ -1,6 +1,6 @@
 {
   "name": "copy-unicode-urls",
-  "version": "0.0.22",
+  "version": "0.0.23.0",
   "description": "",
   "homepage": "https://github.com/ilyaigpetrov/copy-unicode-urls#readme",
   "main": "index.js",
