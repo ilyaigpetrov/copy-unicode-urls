@@ -1,0 +1,44 @@
+{
+  "ExtensionName": {
+    "message": "複製 Unicode 網址",
+    "description": "擴充功能名稱"
+  },
+  "ExtensionDescription": {
+    "message": "將 Unicode 網址複製到剪貼簿，無需面對惱人的百分比編碼或 Punycode！",
+    "description": "擴充功能描述"
+  },
+  "FOR_TESTING": {
+    "message": "測試用"
+  },
+  "IfToDecode": {
+    "message": "是否解碼",
+    "description": ""
+  },
+  "IfToEncodeUrlTerminators": {
+    "message": "是否編碼網址終止字元",
+    "description": ""
+  },
+  "IfToDecodeMultipleTimes": {
+    "message": "是否重複解碼",
+    "description": ""
+  },
+  "Donate": {
+    "message": "贊助 ❤",
+    "description": ""
+  },
+  "CopyUnicodeUrl": {
+    "message": "複製 Unicode 網址",
+    "description": ""
+  },
+  "IconHint": {
+    "message": "點選以複製 Unicode 網址到剪貼簿",
+    "description": ""
+  },
+  "CopyUnicodeLinkToHighlight": {
+    "message": "複製 Unicode 連結到重點區段",
+    "description": ""
+  },
+  "CopyUrlFromTheAddressBar": {
+    "message": "從網址列複製網址"
+  }
+}
