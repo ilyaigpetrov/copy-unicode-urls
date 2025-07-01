@@ -173,9 +173,20 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
 });
 
-chrome.action.onClicked.addListener(async ({ url: urlToBeCopied }) => {
+chrome.action.onClicked.addListener(async (tab) => {
   console.log('Main waits for listeners to be installed...');
   const copyUrl = await copyUrlInstalledPromise;
+  const urlToBeCopied = tab.url;
   console.log('Action clicked with url:', urlToBeCopied);
-  copyUrl(urlToBeCopied);
+
+  try {
+    await copyUrl(urlToBeCopied);
+    await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ['src/content/page_notification.js']
+    });
+    console.log("Injection of page_notification.js initiated.");
+  } catch (error) {
+    console.error("Error during copyUrl execution and notification", error);
+  }
 });
