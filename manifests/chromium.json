@@ -5,6 +5,7 @@
     , "contextMenus"
     , "storage"
     , "clipboardWrite"
+    , "scripting"
 ],
 
   "minimum_chrome_version": "88.0.0.0",
