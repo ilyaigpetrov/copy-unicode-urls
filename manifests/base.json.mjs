@@ -41,6 +41,18 @@ export const render = ({ version, edition }) => {
           "default": "Alt+U"
         }
       }
-    }
+    },
+    "background": {
+      "service_worker": "/src/bg/index.mjs",
+      "type": "module"
+    },
+    "permissions": [
+      "contextMenus",
+      "storage",
+      "activeTab",
+      "scripting",
+      "offscreen"
+    ],
+    "web_accessible_resources": []
   };
 };
