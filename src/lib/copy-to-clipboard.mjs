@@ -50,16 +50,20 @@ export const copyToClipboardAsync = async (copyMe) => {
       await IF_ALREADY_PROMISE;
       console.log('New offscreen document created.');
       IF_ALREADY_PROMISE = null;
+      return Promise.resolve('OD_CREATED');
     }
     await setupOffscreenDocument(OFFSCREEN_DOC_PATH);
     console.log('Sending a message to the offscreen doc.');
     // Now that we have an offscreen document, we can dispatch the
     // message.
-    const resp = await chrome.runtime.sendMessage({
+    const sending = chrome.runtime.sendMessage({
       type: 'copy-data-to-clipboard',
       target: 'offscreen-doc',
       data: copyMe,
     });
+    const resp = await sending;
+    // For some reason the resp is always undefined in Chrome.
     console.log(`The OD replied with: ${resp}`);
+    await chrome.offscreen.closeDocument();
   }
 };

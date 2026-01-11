@@ -20,33 +20,25 @@
 // Registering this listener when the script is first executed ensures that the
 // offscreen document will be able to receive messages when the promise returned
 // by `offscreen.createDocument()` resolves.
-chrome.runtime.onMessage.addListener(handleMessages);
 
-// This function performs basic filtering and error checking on messages before
-// dispatching the
-// message to a more specific message handler.
-async function handleMessages(message) {
+const handleMessage = (message, sender, sendResponse) => {
   console.log('OD handler invoked with msg:', message);
-  if (message.target === 'offscreen-doc') {
-    // Dispatch the message to an appropriate handler.
-    switch (message.type) {
-      case 'copy-data-to-clipboard':
-        try {
-          handleClipboardWrite(message.data);
-          console.log('OD:Copied. Resolving...');
-          return Promise.resolve('COPIED_SUCCESSFULLY');
-        } finally {
-          // Job's done! Close the offscreen document.
-          window.close();
-        }
-        break;
-      default:
-        console.warn(`Unexpected message type received: '${message.type}'.`);
-    }
+  if (message.target !== 'offscreen-doc') {
+    return; // Let some other listener respond.
   }
-  console.log('OD:Not copied. Rejecting...');
-  return Promise.reject('NOT_COPIED');
-}
+  switch (message.type) {
+    case 'copy-data-to-clipboard':
+      handleClipboardWrite(message.data);
+      const copiedPromise = Promise.resolve('COPIED');
+      console.log('OD:Copied. Resolving with:', copiedPromise);
+      return copiedPromise;
+    default:
+      const errorMessage = `Unexpected message type received: '${message.type}'.`;
+      console.warn(errorMessage);
+      return Promise.reject(new Error(errorMessage));
+  }
+};
+chrome.runtime.onMessage.addListener(handleMessage);
 
 // We use a <textarea> element for two main reasons:
 //  1. preserve the formatting of multiline text,
@@ -71,4 +63,4 @@ function handleClipboardWrite(data) {
   text.value = data;
   text.select();
   document.execCommand('copy');
-}
+};
