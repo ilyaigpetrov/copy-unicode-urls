@@ -1,4 +1,13 @@
-let IF_ALREADY_PROMISE; // A global promise to avoid concurrency issues.
+/*
+1) We can't have several active offsceen documents at the same moment
+because otherwise it's not clear who should respond to the copy
+request.
+2) We can't reuse existing ODs because they may be closed by their
+opener before we manage to copy data to the clipboard.
+3) We must close the OD after copying is done because it eats about
+90MB of RAM.
+*/
+let PREVIOUS_OD_CLOSING = Promise.resolve();
 const OFFSCREEN_DOC_PATH = '/src/lib/offscreen-doc-for-copying.html';
 
 export const copyToClipboardAsync = async (copyMe) => {
@@ -19,43 +28,17 @@ export const copyToClipboardAsync = async (copyMe) => {
       return;
     }
     console.log('Trying `chrome.offscreen`...');
-
-    async function setupOffscreenDocument(path) {
-      // Check all windows controlled by the service worker to see if one
-      // of them is the offscreen document with the given path.
-      const offscreenUrl = chrome.runtime.getURL(path);
-      console.log(`Opening offscreen page for ${path}. Its url is ${offscreenUrl}.`)
-      const existingContexts = await chrome.runtime.getContexts({
-        contextTypes: ['OFFSCREEN_DOCUMENT'],
-        documentUrls: [offscreenUrl],
-      });
-      console.log('Existing contexts:', existingContexts);
-
-      if (existingContexts.length > 0) {
-        console.log('Offscreen document already exists.');
-        return;
-      }
-
-      // Create offscreen document.
-      if (IF_ALREADY_PROMISE) {
-        console.log('Already promised.');
-        return IF_ALREADY_PROMISE;
-      }
-      console.log('Creating new offscreen document for:', offscreenUrl);
-      IF_ALREADY_PROMISE = chrome.offscreen.createDocument({
-        url: offscreenUrl,
-        reasons: [chrome.offscreen.Reason.CLIPBOARD],
-        justification: 'To copy URL as Unicode from the address bar into the clipboard.',
-      });
-      await IF_ALREADY_PROMISE;
-      console.log('New offscreen document created.');
-      IF_ALREADY_PROMISE = null;
-      return Promise.resolve('OD_CREATED');
-    }
-    await setupOffscreenDocument(OFFSCREEN_DOC_PATH);
-    console.log('Sending a message to the offscreen doc.');
-    // Now that we have an offscreen document, we can dispatch the
-    // message.
+    const offscreenUrl = chrome.runtime.getURL(OFFSCREEN_DOC_PATH);
+    console.log(`Waiting for the previous OD to close...`);
+    await PREVIOUS_OD_CLOSING;
+    console.log('Creating new offscreen document for:', offscreenUrl);
+    const openingNewOD = chrome.offscreen.createDocument({
+      url: offscreenUrl,
+      reasons: [chrome.offscreen.Reason.CLIPBOARD],
+      justification: 'To copy URL as Unicode from the address bar into the clipboard.',
+    });
+    await openingNewOD;
+    console.log('New offscreen document created. Sending a message to it...');
     const sending = chrome.runtime.sendMessage({
       type: 'copy-data-to-clipboard',
       target: 'offscreen-doc',
@@ -64,6 +47,6 @@ export const copyToClipboardAsync = async (copyMe) => {
     const resp = await sending;
     // For some reason the resp is always undefined in Chrome.
     console.log(`The OD replied with: ${resp}`);
-    await chrome.offscreen.closeDocument();
+    return PREVIOUS_OD_CLOSING = chrome.offscreen.closeDocument();
   }
 };
